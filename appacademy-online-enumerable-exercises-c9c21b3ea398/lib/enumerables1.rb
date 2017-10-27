@@ -22,8 +22,8 @@ end
 # multiplied by its index. array_sum_with_index([2, 9, 7]) => 23 because (2 * 0) +
 # (9 * 1) + (7 * 2) = 0 + 9 + 14 = 23
 def array_sum_with_index(arr)
-  arr1 = arr.map.each_with_index {|num, index| num * index}
-  # arr1.reduce(:+) wrong
+  arr1 = arr.map.with_index {|num, index| num * index}
+  arr1.reduce(0) {|acc, el| acc + el} #pls initialize acc to 0 by parsing 0 to reduce
 end
 
 # MEDIUM
