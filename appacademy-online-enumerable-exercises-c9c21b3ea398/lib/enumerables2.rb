@@ -5,22 +5,35 @@ require 'byebug'
 # Define a method that returns the sum of all the elements in its argument (an
 # array of numbers).
 def array_sum(arr)
+  arr.reduce(0) {|acc, el| acc + el}
 end
 
 # Define a method that returns a boolean indicating whether substring is a
 # substring of each string in the long_strings array.
 # Hint: you may want a sub_tring? helper method
 def in_all_strings?(long_strings, substring)
+  long_strings.each {|string| return false if !sub_string?(string, substring)}
+  true
 end
 
+def sub_string?(string, sub)
+  string.include?(sub)
+end
 # Define a method that accepts a string of lower case words (no punctuation) and
 # returns an array of letters that occur more than once, sorted alphabetically.
 def non_unique_letters(string)
+  arr = string.chars.select {|char| char.ord <= 'z'.ord && char.ord >= 'a'.ord}
+  result = arr.select.with_index {|word, index| (arr.reject.with_index {|word2, index2| index == index2}).include?(word)}
+  result.uniq.sort
 end
 
 # Define a method that returns an array of the longest two words (in order) in
 # the method's argument. Ignore punctuation!
 def longest_two_words(string)
+  arr = string.split(" ")
+  result = [arr.delete(arr.max_by(&:length))] #remove and save the removed element
+  result << arr.max_by(&:length)
+  result
 end
 
 # MEDIUM
@@ -28,6 +41,8 @@ end
 # Define a method that takes a string of lower-case letters and returns an array
 # of all the letters that do not occur in the method's argument.
 def missing_letters(string)
+  alphabet = "abcdefghijklmnopqrstuvwxyz".chars
+  alphabet.select {|letter| !string.include?(letter)}
 end
 
 # Define a method that accepts two years and returns an array of the years
