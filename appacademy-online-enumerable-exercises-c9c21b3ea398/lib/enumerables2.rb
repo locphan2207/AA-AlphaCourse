@@ -49,9 +49,12 @@ end
 # within that range (inclusive) that have no repeated digits. Hint: helper
 # method?
 def no_repeat_years(first_yr, last_yr)
+  (first_yr..last_yr).select {|year| not_repeat_year?(year)}
 end
 
 def not_repeat_year?(year)
+  arr = year.to_s.chars
+  arr.uniq.join("") == year.to_s
 end
 
 # HARD
@@ -64,9 +67,17 @@ end
 # appear multiple times in a row and remove them. You may wish to write a helper
 # method no_repeats?
 def one_week_wonders(songs)
+  arr = songs.select {|song| no_repeats?(song, songs)}
+  arr.uniq
 end
 
 def no_repeats?(song_name, songs)
+  for i in 0..songs.length-2
+    if songs[i] == song_name && songs[i] == songs[i+1]
+      return false
+    end
+  end
+  true
 end
 
 # Define a method that, given a string of words, returns the word that has the
@@ -75,9 +86,24 @@ end
 # wish to write the helper methods c_distance and remove_punctuation.
 
 def for_cs_sake(string)
+  words = string.split
+  words.each_with_index do |word, index|
+    newWord = ""
+    word.chars do |char|
+      if char.ord <= 'z'.ord && char.ord >= 'a'.ord
+        newWord += char
+      end
+    end
+    words[index] = newWord
+  end
+  distances = []
+  words.each {|word| distances << c_distance(word)}
+  words.each {|word| return word if c_distance(word) == distances.min}
+  ""
 end
 
 def c_distance(word)
+  word.chars.reverse_each.with_index {|char, index| word.length - index if char == "c"}
 end
 
 # Define a method that, given an array of numbers, returns a nested array of
@@ -86,4 +112,17 @@ end
 # [[0, 1]] repeated_number_ranges([1, 2, 3, 3, 4, 4, 4]) => [[2, 3], [4, 6]]
 
 def repeated_number_ranges(arr)
+  startIndex = endIndex = 0
+  result = []
+  arr.each_with_index do |num, index|
+    if arr[index] == arr[index + 1]
+      endIndex = index + 1
+    else
+      if startIndex < endIndex
+        result << [startIndex, endIndex]
+      end
+      startIndex = endIndex = index + 1
+    end
+  end
+  result 
 end
