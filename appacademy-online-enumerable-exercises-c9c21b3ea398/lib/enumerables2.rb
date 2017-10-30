@@ -12,17 +12,15 @@ end
 # substring of each string in the long_strings array.
 # Hint: you may want a sub_tring? helper method
 def in_all_strings?(long_strings, substring)
-  long_strings.each {|string| return false if !sub_string?(string, substring)}
+  long_strings.each {|string| return false if !string.include?(substring)}
   true
 end
 
-def sub_string?(string, sub)
-  string.include?(sub)
-end
 # Define a method that accepts a string of lower case words (no punctuation) and
 # returns an array of letters that occur more than once, sorted alphabetically.
 def non_unique_letters(string)
   arr = string.chars.select {|char| char.ord <= 'z'.ord && char.ord >= 'a'.ord}
+  #Look at each word, then check if it is included in the rest of the array
   result = arr.select.with_index {|word, index| (arr.reject.with_index {|word2, index2| index == index2}).include?(word)}
   result.uniq.sort
 end
@@ -31,7 +29,9 @@ end
 # the method's argument. Ignore punctuation!
 def longest_two_words(string)
   arr = string.split(" ")
-  result = [arr.delete(arr.max_by(&:length))] #remove and save the removed element
+  #remove longest word out of array and save the removed element into result
+  #then find the longest word again after removing the 1st longest word
+  result = [arr.delete(arr.max_by(&:length))]
   result << arr.max_by(&:length)
   result
 end
@@ -41,7 +41,7 @@ end
 # Define a method that takes a string of lower-case letters and returns an array
 # of all the letters that do not occur in the method's argument.
 def missing_letters(string)
-  alphabet = "abcdefghijklmnopqrstuvwxyz".chars
+  alphabet = ("a".."z")
   alphabet.select {|letter| !string.include?(letter)}
 end
 
@@ -53,7 +53,7 @@ def no_repeat_years(first_yr, last_yr)
 end
 
 def not_repeat_year?(year)
-  arr = year.to_s.chars
+  arr = year.to_s.chars #array of digit in char
   arr.uniq.join("") == year.to_s
 end
 
@@ -73,9 +73,7 @@ end
 
 def no_repeats?(song_name, songs)
   for i in 0..songs.length-2
-    if songs[i] == song_name && songs[i] == songs[i+1]
-      return false
-    end
+    return false if songs[i] == song_name && songs[i] == songs[i+1]
   end
   true
 end
@@ -88,6 +86,7 @@ end
 def for_cs_sake(string)
   words = string.split
   words.each_with_index do |word, index|
+    #Remove punctuation:
     newWord = ""
     word.chars do |char|
       if char.ord <= 'z'.ord && char.ord >= 'a'.ord
@@ -96,6 +95,7 @@ def for_cs_sake(string)
     end
     words[index] = newWord
   end
+  #Calculate all c distances and find the minimum one:
   distances = []
   words.each {|word| distances << c_distance(word)}
   words.each {|word| return word if c_distance(word) == distances.min}
@@ -115,14 +115,17 @@ def repeated_number_ranges(arr)
   startIndex = endIndex = 0
   result = []
   arr.each_with_index do |num, index|
+    # Update endIndex if the number is repeating:
     if arr[index] == arr[index + 1]
       endIndex = index + 1
     else
-      if startIndex < endIndex
+    # If it stops repeating, or not repeat:
+      if startIndex < endIndex #to save result if there is repeated number right before
         result << [startIndex, endIndex]
       end
+      # Reset index:
       startIndex = endIndex = index + 1
     end
   end
-  result 
+  result
 end

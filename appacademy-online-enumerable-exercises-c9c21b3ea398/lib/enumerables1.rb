@@ -64,6 +64,8 @@ def ordered_vowel_word?(word)
   onlyVow.reduce do |acc, el|
     if acc.ord > el.ord
       return false
+    else
+      acc = el
     end
   end
   true
