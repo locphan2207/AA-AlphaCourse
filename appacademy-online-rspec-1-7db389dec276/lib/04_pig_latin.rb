@@ -1,6 +1,6 @@
 def translate_word(string)
   vowels = "aeiou"
-  two_consonants = "bl br ch cl	cr dr	fl fr	gl gr pl pr	sc sh	sk sl	sm sn	sp st sw th tr tw	wh wr qu"
+  two_consonants = "bl br ch cl	cr dr fl fr	gl gr pl pr sc sh	sk sl sm sn sp st sw th tr tw wh wr qu"
   three_consonants = "sch scr shr sph spl spr squ str thr"
   if vowels.include?(string[0])
     string + "ay"
