@@ -1,10 +1,8 @@
-This project has four separate problems, with four separate spec files. Run
+This project has two separate problems, with two separate spec files. Run
 them in the following order:
 
-1. `00_silly_blocks_spec.rb`
-1. `01_performance_monitor_spec.rb`
-1. `02_eval_block_spec.rb`
-1. `03_iteration_spec.rb`
+1. `00_array_extensions_spec.rb`
+1. `01_class_extensions_spec.rb`
 
 Instructions for each problem are in the spec file.
 
