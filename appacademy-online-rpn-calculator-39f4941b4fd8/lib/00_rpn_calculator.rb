@@ -17,35 +17,44 @@ class RPNCalculator
     false
   end
   
+  def doMath(operator, index)
+    case operator
+    when :+
+      @value = @stack[index-2] + @stack[index-1]
+    when :-
+      @value = @stack[index-2] - @stack[index-1]
+    when :*
+      @value = @stack[index-2] * @stack[index-1]
+    when :/
+      @value = @stack[index-2].to_f / @stack[index-1].to_f
+    end
+    # Delete Operator, Operand. Save the operation's result
+    @stack[index-2] = @value #save result
+    @stack.delete_at(index) #delete operator
+    @stack.delete_at(index-1) #delete operand
+  end
+  
   def plus
     if enoughNumber? 
-      @value = @stack[@stack.length-2] + @stack[@stack.length-1]
-      @stack[@stack.length-2] = @value
-      @stack.pop
+      doMath(:+, @stack.length) #index for this case (only 2 numbers) is the length
     end
   end
   
   def minus 
     if enoughNumber?
-      @value = @stack[@stack.length-2] - @stack[@stack.length-1]
-      @stack[@stack.length-2] = @value
-      @stack.pop
+      doMath(:-, @stack.length)
     end
   end
   
   def times 
     if enoughNumber?
-      @value = @stack[@stack.length-2] * @stack[@stack.length-1]
-      @stack[@stack.length-2] = @value
-      @stack.pop
+      doMath(:*, @stack.length)
     end
   end
   
   def divide 
     if enoughNumber?
-      @value = @stack[@stack.length-2].to_f / @stack[@stack.length-1].to_f #force to float type
-      @stack[@stack.length-2] = @value
-      @stack.pop
+      doMath(:/, @stack.length)
     end
   end
   
@@ -62,23 +71,13 @@ class RPNCalculator
   
   def evaluate(string)
     tokens(string)
-    while @stack.length > 1
+    while @stack.length > 1 #keep doing math until one number is left
       @stack.each_with_index do |token, index|
-        case token
-        when :+
-          @value = @stack[index-2] + @stack[index-1]
-        when :-
-          @value = @stack[index-2] - @stack[index-1]
-        when :*
-          @value = @stack[index-2] * @stack[index-1]
-        when :/
-          @value = @stack[index-2].to_f / @stack[index-1].to_f
+        if token.class == Symbol  #start doing math when we meet the operator symbol
+          doMath(token, index)
         else
           next
         end
-        @stack[index-2] = @value
-        @stack.delete_at(index)
-        @stack.delete_at(index-1)
         break
       end
     end
