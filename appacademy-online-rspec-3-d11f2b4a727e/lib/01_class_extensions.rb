@@ -20,7 +20,7 @@ class String
   def caesar(shift)
     chars = self.chars
     chars.map! do |char|
-      if char.ord + shift <= 'z'.ord
+      if char.downcase.ord + shift <= 'z'.ord #added to handle non-CAP and CAP char
         (char.ord + shift).chr
       else
         (char.ord + shift - ('z'.ord - 'a'.ord + 1)).chr #Wrap around
