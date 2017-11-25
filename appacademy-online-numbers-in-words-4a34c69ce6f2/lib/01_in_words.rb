@@ -45,8 +45,6 @@ class Fixnum
     number = self
     result = ""
     while number > 0
-      # if number == 0
-        
       if number >= (10**12)
         result += readHundred(number/(10**12)) + " trillion "
         number = number % (10**12)
